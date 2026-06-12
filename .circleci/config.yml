@@ -1,0 +1,22 @@
+version: 2.1
+
+jobs:
+  build-and-test:
+    docker:
+      - image: cimg/openjdk:26.0
+    steps:
+      - checkout
+      - run:
+          name: Build and test with coverage
+          command: mvn -B clean verify
+      - run:
+          name: Upload coverage to Codecov
+          command: |
+            curl -Os https://cli.codecov.io/latest/linux/codecov
+            chmod +x codecov
+            ./codecov upload-process -f target/site/jacoco/jacoco.xml
+
+workflows:
+  build-test-upload:
+    jobs:
+      - build-and-test
