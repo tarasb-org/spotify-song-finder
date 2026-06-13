@@ -16,13 +16,18 @@ public class SongDTO {
 
     @JsonIgnore
     private Long id;
-    private Long spotifyId;
+    private String spotifyId;
     private String title;
     private String artist;
     private String album;
-    private Date releaseDate;
+    private String imageUrl;
     private String spotifyUrl;
-    private Integer releaseYear;
-
-    private List<Song> similarSongs;
+    private String releaseDate;
+    private Double tempo;
+    private Double energy;
+    private Double danceability;
+    private Double valence;
+    private Double acousticness;
+    private Double instrumentalness;
+    private Integer popularity;
 }

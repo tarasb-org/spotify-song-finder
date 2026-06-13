@@ -38,7 +38,8 @@ build/
 .env
 .env.*
 !.env.example
-*/src/main/resources/application-secrets.properties
+docker
+docker/mysql-data
 
 # Java / Maven / Gradle
 .gradle/

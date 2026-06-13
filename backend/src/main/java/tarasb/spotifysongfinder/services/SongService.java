@@ -10,5 +10,8 @@ public interface SongService {
 
     SongDTO getSongById(Long id);
 
+    SongDTO getSongBySpotifyId(String spotifyId);
+
+    SongDTO saveSong(SongDTO songDTO);
 
 }
