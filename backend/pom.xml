@@ -84,11 +84,11 @@
         </dependency>
 
         <!-- Project dependencies -->
-        <dependency>
-            <groupId>tarasb.springframework</groupId>
-            <artifactId>rest-model</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>tarasb.springframework</groupId>-->
+<!--            <artifactId>rest-model</artifactId>-->
+<!--            <version>0.0.1-SNAPSHOT</version>-->
+<!--        </dependency>-->
 
         <!-- Test dependencies -->
         <dependency>
