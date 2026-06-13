@@ -17,6 +17,16 @@ jobs:
             ./codecov upload-process -f target/site/jacoco/jacoco.xml
 
 workflows:
-  build-test-upload:
+  main-pipeline:
     jobs:
-      - build-and-test
+      - build-and-test:
+          filters:
+            branches:
+              only: main
+
+  dev-pipeline:
+    jobs:
+      - build-and-test:
+          filters:
+            branches:
+              only: dev
