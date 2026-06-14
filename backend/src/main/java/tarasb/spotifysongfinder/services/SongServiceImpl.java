@@ -3,10 +3,12 @@ package tarasb.spotifysongfinder.services;
 import org.springframework.stereotype.Service;
 import tarasb.spotifysongfinder.api.v1.mapper.SongMapper;
 import tarasb.spotifysongfinder.api.v1.model.SongDTO;
+import tarasb.spotifysongfinder.model.ReccoBeatsAudioFeaturesResponse;
 import tarasb.spotifysongfinder.model.Song;
 import tarasb.spotifysongfinder.repositories.SongRepository;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -14,13 +16,16 @@ public class SongServiceImpl implements SongService {
 
     private final SongRepository songRepository;
     private final SongMapper songMapper;
-    private final SpotifyServiceImpl spotifyService;
+    private final SpotifyService spotifyService;
+    private final ReccoBeatsService reccoBeatsService;
 
-    public SongServiceImpl(SongRepository songRepository, SongMapper songMapper, SpotifyServiceImpl spotifyService) {
+    public SongServiceImpl(SongRepository songRepository, SongMapper songMapper, SpotifyService spotifyService, ReccoBeatsService reccoBeatsService) {
         this.songRepository = songRepository;
         this.songMapper = songMapper;
         this.spotifyService = spotifyService;
+        this.reccoBeatsService = reccoBeatsService;
     }
+
 
     @Override
     public List<SongDTO> getAllSongs() {
@@ -57,6 +62,29 @@ public class SongServiceImpl implements SongService {
     @Override
     public List<SongDTO> searchSongs(String query) {
         List<SongDTO> results = spotifyService.searchSongs(query);
+
+        List<String> spotifyIds = results.stream()
+                .map(SongDTO::getSpotifyId)
+                .toList();
+
+        Map<String, ReccoBeatsAudioFeaturesResponse.AudioFeatures> featuresMap =
+                reccoBeatsService.getAudioFeaturesBatch(spotifyIds);
+
+        results.forEach(dto -> {
+            var features = featuresMap.get(dto.getSpotifyId());
+            if (features != null) {
+                dto.setTempo(features.getTempo());
+                dto.setEnergy(features.getEnergy());
+                dto.setDanceability(features.getDanceability());
+                dto.setValence(features.getValence());
+                dto.setAcousticness(features.getAcousticness());
+                dto.setInstrumentalness(features.getInstrumentalness());
+                dto.setLoudness(features.getLoudness());
+                dto.setLiveness(features.getLiveness());
+                dto.setSpeechiness(features.getSpeechiness());
+            }
+        });
+
         results.forEach(this::saveSong);
         return results;
     }

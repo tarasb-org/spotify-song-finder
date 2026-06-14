@@ -1,3 +1,5 @@
+use spotifysongfinder;
+
 CREATE TABLE songs (
     id BIGINT NOT NULL AUTO_INCREMENT,
     spotify_id VARCHAR(255) NOT NULL,
@@ -14,6 +16,9 @@ CREATE TABLE songs (
     acousticness DOUBLE,
     instrumentalness DOUBLE,
     popularity INT,
+    loudness DOUBLE,
+    liveness DOUBLE,
+    speechiness DOUBLE,
     PRIMARY KEY (id),
     CONSTRAINT uk_songs_spotify_id UNIQUE (spotify_id)
 );

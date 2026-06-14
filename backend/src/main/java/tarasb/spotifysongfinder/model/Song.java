@@ -36,6 +36,9 @@ public class Song implements Serializable {
     private Double acousticness;
     private Double instrumentalness;
     private Integer popularity;
+    private Double loudness;
+    private Double liveness;
+    private Double speechiness;
 
     @Override
     public boolean equals(Object o) {

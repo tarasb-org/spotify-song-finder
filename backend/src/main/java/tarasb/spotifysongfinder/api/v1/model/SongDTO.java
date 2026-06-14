@@ -30,4 +30,7 @@ public class SongDTO {
     private Double acousticness;
     private Double instrumentalness;
     private Integer popularity;
+    private Double loudness;
+    private Double liveness;
+    private Double speechiness;
 }
