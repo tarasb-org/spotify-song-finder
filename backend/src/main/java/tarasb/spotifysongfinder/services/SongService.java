@@ -14,4 +14,6 @@ public interface SongService {
 
     SongDTO saveSong(SongDTO songDTO);
 
+    List<SongDTO> searchSongs(String query);
+
 }

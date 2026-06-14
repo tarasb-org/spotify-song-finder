@@ -14,10 +14,12 @@ public class SongServiceImpl implements SongService {
 
     private final SongRepository songRepository;
     private final SongMapper songMapper;
+    private final SpotifyServiceImpl spotifyService;
 
-    public SongServiceImpl(SongRepository songRepository, SongMapper songMapper) {
+    public SongServiceImpl(SongRepository songRepository, SongMapper songMapper, SpotifyServiceImpl spotifyService) {
         this.songRepository = songRepository;
         this.songMapper = songMapper;
+        this.spotifyService = spotifyService;
     }
 
     @Override
@@ -50,5 +52,12 @@ public class SongServiceImpl implements SongService {
         Song song = songMapper.songDTOToSong(songDTO);
         Song savedSong = songRepository.save(song);
         return songMapper.songToSongDTO(savedSong);
+    }
+
+    @Override
+    public List<SongDTO> searchSongs(String query) {
+        List<SongDTO> results = spotifyService.searchSongs(query);
+        results.forEach(this::saveSong);
+        return results;
     }
 }

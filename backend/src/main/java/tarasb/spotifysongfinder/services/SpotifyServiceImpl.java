@@ -19,11 +19,8 @@ public class SpotifyServiceImpl implements SpotifyService {
 
     private final SpotifyApi spotifyApi;
 
-    public SpotifyServiceImpl(SpotifyConfig config) {
-        this.spotifyApi = SpotifyApi.builder()
-                .setClientId(config.getClientId())
-                .setClientSecret(config.getClientSecret())
-                .build();
+    public SpotifyServiceImpl(SpotifyApi spotifyApi) {
+        this.spotifyApi = spotifyApi;
     }
 
     @Override
