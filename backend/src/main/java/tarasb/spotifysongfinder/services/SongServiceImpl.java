@@ -51,12 +51,28 @@ public class SongServiceImpl implements SongService {
 
     @Override
     public SongDTO saveSong(SongDTO songDTO) {
-        if (songRepository.existsBySpotifyId(songDTO.getSpotifyId())) {
-            return getSongBySpotifyId(songDTO.getSpotifyId());
+        Optional<Song> existing = songRepository.findBySpotifyId(songDTO.getSpotifyId());
+
+        if (existing.isPresent()) {
+            Song song = existing.get();
+            // update audio features if they were missing before
+            if (song.getTempo() == null && songDTO.getTempo() != null) {
+                song.setTempo(songDTO.getTempo());
+                song.setEnergy(songDTO.getEnergy());
+                song.setDanceability(songDTO.getDanceability());
+                song.setValence(songDTO.getValence());
+                song.setAcousticness(songDTO.getAcousticness());
+                song.setInstrumentalness(songDTO.getInstrumentalness());
+                song.setLoudness(songDTO.getLoudness());
+                song.setLiveness(songDTO.getLiveness());
+                song.setSpeechiness(songDTO.getSpeechiness());
+                songRepository.save(song);
+            }
+            return songMapper.songToSongDTO(song);
         }
+
         Song song = songMapper.songDTOToSong(songDTO);
-        Song savedSong = songRepository.save(song);
-        return songMapper.songToSongDTO(savedSong);
+        return songMapper.songToSongDTO(songRepository.save(song));
     }
 
     @Override
